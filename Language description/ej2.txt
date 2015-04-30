@@ -1,0 +1,13 @@
+Declare function
+int factorial(int n){
+	int fact=1;
+	foreach i in {1..n}
+		fact=fact*i;
+	endforeach
+	return fact;
+}
+
+Begin
+	int v=8;
+	int resultado=factorial(v);
+End

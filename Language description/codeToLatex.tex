@@ -1,0 +1,49 @@
+\documentclass{article}
+\usepackage{graphicx} 
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{basic}{  
+  basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  captionpos=b,
+  keywordstyle=\color{blue}\bf,
+  commentstyle=\color{gray},
+  stringstyle=\color{green},
+  keywordstyle={[2]\color{red}\bf},
+  morekeywords={Declare, var, class,  Class, public, private, Begin, End, function},
+}
+
+
+\lstdefinelanguage{custom}
+{
+morekeywords={Declare, var, class,  Class, public, private, Begin, End, function},
+sensitive=false,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]",
+}
+
+
+\begin{document}
+
+\pagestyle{empty}
+
+\thispagestyle{empty}
+
+% \lstinputlisting[ style=basic, language=Python]{ ej1.txt}
+ %\lstinputlisting[ style=basic, language=Java]{ ej1.txt}
+
+ \lstinputlisting[ style=basic, language=custom]{ej1.txt}
+\newpage
+ \lstinputlisting[ style=basic, language=custom]{ej2.txt}
+
+\end{document}

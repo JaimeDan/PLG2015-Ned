@@ -1,0 +1,266 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[left=2cm,top=2.5cm,right=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+%\usepackage[pdftex]{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+%\usepackage{enumerate}
+
+
+%%%% g r a m m a r %%%%
+
+%%%%%%%%%%%%%%
+
+\newcommand{\cc}[1]{\texttt{#1}}
+\newcommand{\ra}{\rightarrow}
+
+
+\title{\huge Práctica PLG, el lenguaje Ned}
+\author{Mayra Alexandra Castrosqui Florián\\
+	Jaime Dan Porras Rhee
+\date{Abril 2015}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+\maketitle
+\abstract{En esta entrega se especificará el léxico y la sintaxis del lenguaje. Se expondrán ejemplos típicos de programas en dicho lenguaje.}
+
+
+
+\subsection*{Descripción del lenguaje}
+Ned es un lenguaje de programación imperativo. Un programa escrito en Ned se divide en cuatro bloques. Los tres primeros para declaraciones y el último que contiene el código a ejecutar. 
+En el primero se declaran las variables globales. En el segundo bloque se declaran las clases con sus métodos y atributos. En el tercero se declaran funciones y procedimientos. Y en el último, rodeado por un \cc{Begin End} se encuentra el código principal.
+Esquemáticamente sería de la forma 
+
+\begin{verbatim}
+Declare var
+...
+Declare class
+...
+Declare function
+...
+Begin
+...
+End
+\end{verbatim}
+
+\subsubsection*{Características del lenguaje}
+
+Identificadores y ámbitos de definición \\
+Clases, procedimientos y funciones. El lenguaje tendrá ámbitos de declaración dinámicos.\\
+
+Tipos\\
+Tipos con nombre y definición de tipos de usuario.\\
+
+Instrucciones ejecutables\\
+Instrucción case. Llamadas a procedimientos, funciones y métodos de clase.\\
+
+Errores\\
+Tratar de proseguir la compilación tras un error, a fin de detectar más errores.\\
+
+
+\section{Análisis léxico}
+
+Se tendrán las siguientes clases de unidades léxicas:
+\begin{itemize}
+\item Identificadores.
+\item Palabras reservadas.
+\item Constantes literales para los tipos int, float, char, string y bool.
+\item Símbolos. 
+\end{itemize}
+
+Algunas palabras reservadas serán \cc{break}, \cc{continue}, \cc{const} entre otras que irán apareciendo en este documento.
+
+\newpage
+
+Los identificadores podrán admitir mayúsculas, minúsculas y ``\cc{\_}''. Los identificadores de variables y funciones empiezan por minúscula y los de clases por mayúscula.
+
+\begin{equation*} %\label{eq1}
+\begin{split}
+id 	& \ra Min  (Min \mid May \mid Num\mid \cc{\_} )  ^{*} \\
+Id	& \ra May  ( Min \mid May \mid Num \mid \cc{\_} )  ^*
+\end{split}
+\end{equation*}
+
+Las constantes literales 
+
+\begin{equation*}
+\begin{split}
+int 	& \ra Num^* \\
+float 	& \ra Num^+.[Num^+] \\
+char	& \ra \cc{`}c\cc{'} \\
+string 	& \ra \cc{"{}} c^{*} \cc{"{}} \\
+bool 	& \ra \cc{True}\mid \cc{False}
+\end{split}
+\end{equation*}
+
+
+Auxiliares: 
+
+\begin{equation*}
+\begin{split}
+Num	& \ra \cc{0}\mid ..\mid \cc{9} \\
+Min	& \ra \cc{a}\mid ..\mid \cc{z}  \\
+May	& \ra \cc{A}\mid ..\mid \cc{Z} \\
+c 	& \ra Num\mid Min\mid May \mid Sym
+\end{split}
+\end{equation*}
+
+
+
+
+\section{Análisis sintáctico}
+El lenguaje $Ned$ se describe mediante una gramática incontextual $G$. $$G=(V_N, V_T, P, Code)$$
+Las variables terminales son las unidades léxicas que obtenemos del análisis léxico. Las no terminales irán apareciendo en las reglas, además $Code \in V_N$. Veamos las reglas para la gramática de nuestro lenguaje.
+
+\subsubsection*{Reglas}
+
+Reglas para la estructura principal del código
+
+\begin{equation*}
+\begin{split}
+Code 	& \ra Opc \ \cc{Begin}\ S \ \cc{End} \\
+Opc 	& \ra [ \cc{Declare var} \ DV ] [ \cc{Declare class} \ DC ] [\cc{Declare function} \ DF ] \\
+DV 	& \ra ( tipo (id\cc{;} \mid ASIG))^+ \\
+DC 	& \ra ( \cc{Class} \ Id \ \cc{\{ public} \ (DF \mid DV)^* \  \cc{private} \ (DF \mid DV)^* \cc{ \}})^+ \\
+DF 	& \ra (P \mid F)^+ \\
+P 	& \ra id \ \cc{(}[tipo \ id \ (\cc{,} \ tipo \ id )^*]\cc{)}\cc{\{ }S\cc{ \}} \\
+F 	& \ra tipo \  id \cc{(}[tipo \ id \ (\cc{,} \ tipo \ id )^*]\cc{)}\cc{\{ }S\cc{ \}} 
+\end{split}
+\end{equation*}
+
+Reglas para las instrucciones
+
+\begin{equation*}
+\begin{split}
+S 		& \ra  DV \mid ASIG \mid IF \mid WHILE \mid FOR \mid FOREACH \mid REPEAT \mid SWITCH \mid RET \\
+ASIG 		& \ra id \cc{ = } VAL[ \cc{ [}Num\cc{] }] \cc{;} \\
+IF 		& \ra \cc{if} \ B \ \cc{then} \ S \ \cc{else} \ S \ \cc{endif} \\
+WHILE	& \ra \cc{while} \ B \ \cc{do} \ S \ \cc{endwhile} \\
+FOR 		& \ra \cc{for ( }ASIG\cc{;}[ B(\cc{,}B)^* ]\cc{;} ASIG \cc{ )}\ S\ \cc{endfor} \\
+FOREACH  	& \ra \cc{foreach}\ id\ \cc{in} \ id\ \cc{do} \ S \ \cc{endforeach} \\
+REPEAT 	& \ra \cc{repeat} \ S \ \cc{until} \ B \ \cc{endrepeat} \\
+SWITCH 	& \ra \cc{switch ( } id \cc{ ) } \ (\cc{case ( } VAL \cc{ ) } S)^+\ [\cc{Default} \ S] \ \cc{endswitch} \\
+RET 		& \ra \cc{return}  \ VAL\cc{;}
+\end{split}
+\end{equation*}
+
+Otras reglas
+
+\begin{equation*}
+\begin{split}
+tipo 	& \ra \cc{int} \mid \cc{float} \mid \cc{char} \mid \cc{string} \mid \cc{bool} \\
+VAL 	& \ra char \mid string \mid A \mid B \mid id
+\end{split}
+\end{equation*}
+
+\newpage
+
+Reglas para expresiones aritméticas y booleanas
+
+\begin{equation*}
+\begin{split}
+A 	& \ra id \mid int \mid float \mid A\cc{+}A \mid A\cc{-}A \mid A\cc{*}A \mid A \cc{\^{}} A \mid A\cc{\%} A \mid A\cc{:}A \mid A\cc{/}A  \mid \cc{(}A\cc{)} \\
+B 	& \ra bool \mid B \cc{\&\&} B \mid B\cc{||} B \mid  \cc{!}B \mid \cc{(}B\cc{)} \mid C \\
+C 	& \ra A \ comp \ A \\
+comp 	& \ra \cc{==}\mid \cc{!=} \mid \cc{<=} \mid \cc{>=} \mid \cc{<{}} \mid \cc{>{}}
+\end{split}
+\end{equation*}
+
+
+Los símbolos de $comp$ son operadores infijos. Tienen todos la misma prioridad y no son asociativos. Con respecto a los operadores para la expresiones aritméticas y booleanas tenemos los siguientes cuadros. \\
+
+%\begin{center}
+\begin{tabular*}{0.80\textwidth}{ @{\extracolsep{\fill}}| c | c | c | c | }
+  \hline
+  \textsc{Operador} &  \textsc{Tipo} &  \textsc{Prio} & \textsc{Asociatividad} \\
+  \hline 
+   \cc{\^{}}  & binario infijo & 0 & asoc. a derechas    \\
+  \hline
+  \cc{*}  &binario infijo  & 1   & asoc. a izquierdas  \\
+  \hline
+  \cc{/}   & binario infijo  & 1   & asoc. a izquierdas   \\
+  \hline
+  \cc{:}  & binario infijo  & 2  & asoc. a izquierdas    \\
+  \hline
+  \cc{\%}  & binario infijo  & 3  & asoc. a izquierdas   \\
+  \hline
+  \cc{+}  & binario infijo & 4  & asoc. a izquierdas    \\
+  \hline
+  \cc{-}  & binario infijo & 4  & asoc. a izquierdas    \\
+  \hline
+\end{tabular*}
+%\end{center}
+\\
+
+\begin{tabular*}{0.80\textwidth}{ @{\extracolsep{\fill}}| c | c | c | c | }
+  \hline
+  \textsc{Operador} &  \textsc{Tipo} &  \textsc{Prio} & \textsc{Asociatividad}\\
+  \hline 
+  \texttt{\&\&}  & binario infijo & 0 & asoc. a derechas    \\
+  \hline
+  \cc{||}  & binario infijo  & 1   & asoc. a izquierdas  \\
+  \hline
+  \cc{!}   & unario prefijo  &1   & asociativo   \\
+  \hline
+\end{tabular*}
+\\
+
+
+%\section{Ejemplos de código}
+%\begin{lstlisting}
+%Declare Var
+%float r=3.14;
+%
+%Declare Class
+%Class Racional{
+%public 
+%Rac
+%
+%Declare Function
+%int mcd(int a, int b)
+%int mcd = 1;
+%for (i=1; i<min(a,b);i=i+1)
+%if a\%i==0 && b\%i == 0 then
+%if i>mcd then mcd = i;
+%endif
+%endif
+%return mcd;
+%
+%int min(int a, int b)
+%if a<b then return a;
+%else return b;
+%
+%Begin
+%Racional r1 = Racional(1,2);
+%Racional r2 = Racional(1,3);
+%r1=r1+r2;
+%r1.diveq(mcd(r1.getnum, r1.getden));
+%r=r1.tofloat()*r*2;
+%end
+
+
+%Declare funct 
+%int factorial(int n)
+%int fact = 1;
+%for each i in {1..n}
+%	fact = fact*i;
+%end foreach
+%return ract;
+%
+%Begin 
+%int v=8;
+%int resultado = factorial(v);
+%End
+%
+%\end{lstlisting}
+
+
+
+\end{document}

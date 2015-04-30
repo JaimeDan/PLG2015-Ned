@@ -1,0 +1,2 @@
+No llegar a las clases si se cimplica demasiado..
+	nada -> structs -> clases

@@ -1,0 +1,54 @@
+Declare Var
+float r=3.14;
+
+Declare Class
+
+Class Racional{
+	public
+	Racional(int n1, int n2){
+		num = n1;
+		den = n2;
+	}
+	int divEq(int n){
+		num = num/n;
+		den = den/n;
+	}
+	float toFloat(){
+		return num/den;
+	}
+	int getNum(){
+		return num;
+	}
+	int getDen(){
+		return den;
+	}
+	private
+	int num;
+	int den;
+
+}
+
+Declare Function
+	int mcd(int a, int b){
+		int mcd = 1;
+		for (i=1; i<min(a,b);i=i+1)
+			if a%i == 0 && b%i == 0 then
+				if i>mcd then mcd = i;
+				endif
+			endif
+		endfor
+	return mcd;
+	}
+
+	int min(int a, int b){
+		if a<b then return a;
+		else return b;
+	}
+
+Begin
+	Racional r1 = Racional(1,2);
+	Racional r2 = Racional(1,3);
+	r1=r1+r2;
+	r1.diveq(mcd(r1.getnum, r1.getden));
+	r=r1.tofloat()*r*2;
+End
