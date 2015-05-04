@@ -1,0 +1,30 @@
+Definicion de un minilengiaje de programacion y desarrollo de un compilador para el mismo que cubra las fases habituales.
+El lenguaje sera desarrollado en Java y el lenguaje objeto sera codigo-P (el lenguaje de la mauina virtual de Pascal).
+Las fases de analisis lexico y sintactico se haran utilizando las herramientas JLex y CUP.
+
+1 - especificacion en papel de la sintaxis del lenguaje y ejemplos tipicos de programas escritos en dicho leguaje.
+	Se ha de subir un documento PDF con las reglas léxicas y sintácticas del lenguaje de programación para el que se va a hacer el compilador.
+	No es necesario que sea LR(1), aunque le versión final habrá de serlo. Basta con se presente en papel en esta entrega.
+	Además ha de incluir dos o tres ejemplos de programas escritos en el lenguaje.
+
+2 - ficheros de la especificacion del lexico y de la sintaxis, con atributos para la construccion del arbol abstracto, procesados con exito por JLex y CUP.
+	
+	Especificación léxica genérica
+
+	. un fichero .l con una especificación léxica para JLex
+	. la fuentes Java de las clases auxiliares y de un programa principal que ejecute el analizador léxico generado por JLex
+	. un fichero .txt con un ejemplo que contenga una secuencia de unidades léxicas
+	. un fichero .txt con la salida producida por el analizador
+	Las unidades léxicas deben incluir identificadores, constantes numéricas, unas pocas palabras reservadas, unos pocos símbolos, y cadenas ignorables. El esquema debe poderse ampliar fácilmente para incorporar más palabras reservadas y más símbolos.
+	Esta entrega es opcional y no será evaluada, pero es recomendable. Cuando haya que entregar la especificación definitiva, se hará junto con la sintáctica y dejaré poco tiempo, porque entenderé que esta parte la sabéis hacer.
+	
+	Entrega:
+	
+	. un fichero .l con la especificación del léxico, procesado con éxito por JLex
+	. un fichero .cup con la especificación de la sintaxis, procesado con éxito por CUP
+	. las clases .java auxiliares para configurar, un analizador sintáctico-léxico completo 
+	. los ficheros .java generados por JLex y CUP
+	
+3 - Codigo de las fases de identificacion de identificadores y de comprobacion de tipos, con ejemplos pasados con exito y errores.
+
+4 - Codigo de la fase de generacion de codigo, con ejemplos.
