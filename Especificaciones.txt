@@ -13,10 +13,8 @@ Las fases de analisis lexico y sintactico se haran utilizando las herramientas J
 
 	. un fichero .l con una especificación léxica para JLex
 	. la fuentes Java de las clases auxiliares y de un programa principal que ejecute el analizador léxico generado por JLex
-	. un fichero .txt con un ejemplo que contenga una secuencia de unidades léxicas
-	. un fichero .txt con la salida producida por el analizador
-	Las unidades léxicas deben incluir identificadores, constantes numéricas, unas pocas palabras reservadas, unos pocos símbolos, y cadenas ignorables. El esquema debe poderse ampliar fácilmente para incorporar más palabras reservadas y más símbolos.
-	Esta entrega es opcional y no será evaluada, pero es recomendable. Cuando haya que entregar la especificación definitiva, se hará junto con la sintáctica y dejaré poco tiempo, porque entenderé que esta parte la sabéis hacer.
+	. un fichero .txt con un ejemplo que contenga una secuencia de unidades léxicas <<<<<<<
+	. un fichero .txt con la salida producida por el analizador <<<<
 	
 	Entrega:
 	
