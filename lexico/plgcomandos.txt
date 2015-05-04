@@ -1,0 +1,4 @@
+javac Main.java //compilar, geenera los .class
+java JLex.Main ejemplo.l // en la misma carpeta el ejemplo.l y .jar, se ejecuta el jlex con un .l
+-> genera el ejemplo.l.java
+el generado es el nuevo analizador lixico tiny que se ejecuta en el eclipse y ya está
