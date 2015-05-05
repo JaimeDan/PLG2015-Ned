@@ -1,16 +1,23 @@
 package alex;
 
+import errors.GestionErroresTiny;
+
 %%
 %line
 %class AnalizadorLexicoTiny
 %type  UnidadLexica
 %unicode
 %cup
+%public
 
 %{
-  private ALexOperations ops;
-  public String lexema() {return yytext();}
-  public int fila() {return yyline+1;}
+ private ALexOperations ops;
+ private GestionErroresTiny errores;
+ public String lexema() {return yytext();}
+ public int fila() {return yyline+1;}
+ public void fijaGestionErrores(GestionErroresTiny errores) {
+   this.errores = errores;
+ }
 %}
 
 %eofval{
@@ -181,4 +188,4 @@ puntoycoma = \;
 {igual}                   {return ops.unidadIgual();} 
 {coma}                    {return ops.unidadComa();}
 {puntoycoma}              {return ops.unidadPuntocoma();}
-[^]                       {ops.error();}  
+[^]                       {errores.errorLexico(fila(),lexema());} 

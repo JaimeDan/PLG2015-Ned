@@ -1,7 +1,8 @@
 package alex;
+import errors.GestionErroresTiny;
 
 
-class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
+public class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 	private final int YY_BUFFER_SIZE = 512;
 	private final int YY_F = -1;
 	private final int YY_NO_STATE = -1;
@@ -12,9 +13,13 @@ class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 	private final int YY_BOL = 65536;
 	private final int YY_EOF = 65537;
 
-  private ALexOperations ops;
-  public String lexema() {return yytext();}
-  public int fila() {return yyline+1;}
+ private ALexOperations ops;
+ private GestionErroresTiny errores;
+ public String lexema() {return yytext();}
+ public int fila() {return yyline+1;}
+ public void fijaGestionErrores(GestionErroresTiny errores) {
+   this.errores = errores;
+ }
 	private java.io.BufferedReader yy_reader;
 	private int yy_buffer_index;
 	private int yy_buffer_read;
@@ -25,7 +30,7 @@ class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 	private boolean yy_at_bol;
 	private int yy_lexical_state;
 
-	AnalizadorLexicoTiny (java.io.Reader reader) {
+	public AnalizadorLexicoTiny (java.io.Reader reader) {
 		this ();
 		if (null == reader) {
 			throw (new Error("Error: Bad input stream initializer."));
@@ -33,7 +38,7 @@ class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 		yy_reader = new java.io.BufferedReader(reader);
 	}
 
-	AnalizadorLexicoTiny (java.io.InputStream instream) {
+	public AnalizadorLexicoTiny (java.io.InputStream instream) {
 		this ();
 		if (null == instream) {
 			throw (new Error("Error: Bad input stream initializer."));
@@ -557,7 +562,7 @@ class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 					case -4:
 						break;
 					case 4:
-						{ops.error();}
+						{errores.errorLexico(fila(),lexema());}
 					case -5:
 						break;
 					case 5:
@@ -821,7 +826,7 @@ class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 					case -70:
 						break;
 					case 70:
-						{ops.error();}
+						{errores.errorLexico(fila(),lexema());}
 					case -71:
 						break;
 					case 71:
@@ -837,7 +842,7 @@ class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 					case -74:
 						break;
 					case 74:
-						{ops.error();}
+						{errores.errorLexico(fila(),lexema());}
 					case -75:
 						break;
 					case 75:
