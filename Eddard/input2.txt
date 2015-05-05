@@ -1,0 +1,24 @@
+Declare var
+
+Declare function
+bool mayor(int i, int n){
+	return i<n;
+}
+int factorial(int n){
+	int fact=1;
+	x = 3 + 2 * 5;
+	int i;
+	for (i=1;; 
+	n > i; 
+	i= i + 1;)
+		fact=fact*i;
+	endfor
+	return fact;
+}
+
+Begin
+	int v=8;
+	
+	int resultado = factorial; #com(v)
+	/*h=3+2;*/
+End
