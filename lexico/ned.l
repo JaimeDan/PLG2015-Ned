@@ -5,6 +5,7 @@ package alex;
 %class AnalizadorLexicoTiny
 %type  UnidadLexica
 %unicode
+%cup
 
 %{
   private ALexOperations ops;
@@ -19,6 +20,7 @@ package alex;
 %init{
   ops = new ALexOperations(this);
 %init}
+
 
 may  = [A-Z]
 min  = [a-z]
@@ -63,6 +65,7 @@ Default = Default
 endswitch = endswitch
 return = return
 
+
 int = int
 float = float
 char = char
@@ -76,6 +79,8 @@ Id = {may}({min}|{may}|{digito})*
 ent = [\+,\-]?{parteEntera}
 real = [\+,\-]?{parteEntera}\.{parteDecimal}
 boolean = (True|False)
+vchar = \' (may | min |digitopositivo |0| separador) \'
+vstring = \" (may | min |digitopositivo |0| separador)* \"
 
 operadorSuma = \+
 operadorResta = \-
@@ -150,6 +155,8 @@ puntoycoma = \;
 {ent}                     {return ops.unidadEnt();}
 {real}                    {return ops.unidadReal();}
 {boolean}                 {return ops.unidadBoolean();}
+{vchar}                    {return ops.unidadVchar();}
+{vstring}                  {return ops.unidadVstring();}
 
 {operadorSuma}            {return ops.unidadSuma();}
 {operadorResta}           {return ops.unidadResta();}

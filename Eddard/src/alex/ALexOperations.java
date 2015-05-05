@@ -137,7 +137,14 @@ public class ALexOperations {
 	     return new UnidadLexicaMultivaluada(alex.fila(),ClaseLexica.BOOLEAN,
 	                                         alex.lexema()); 
 	  } 
-  
+  public UnidadLexica unidadVchar() {
+	     return new UnidadLexicaMultivaluada(alex.fila(),ClaseLexica.VCHAR,
+	                                         alex.lexema()); 
+	  } 
+  public UnidadLexica unidadVstring() {
+	     return new UnidadLexicaMultivaluada(alex.fila(),ClaseLexica.VSTRING,
+	                                         alex.lexema()); 
+	  } 
   
   
   public UnidadLexica unidadSuma() {
