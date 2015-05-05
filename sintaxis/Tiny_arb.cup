@@ -1,0 +1,112 @@
+package asint;
+
+import java_cup.runtime.*;
+import alex.AnalizadorLexicoTiny;
+import alex.UnidadLexica;
+import errors.GestionErroresTiny;
+
+scan with {: return getScanner().next_token(); :};
+parser code {: 
+   private GestionErroresTiny errores;
+   public void syntax_error(Symbol unidadLexica) {
+     errores.errorSintactico((UnidadLexica)unidadLexica);
+   }
+:};
+init with {: 
+   errores = new GestionErroresTiny();
+   AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
+   alex.fijaGestionErrores(errores);
+:};
+
+
+terminal     		BEGIN, END, DECLARE, VAR, CLASS, FUNCTION,
+					 CCLASS, PUBLIC, PRIVATE, 
+					 IF, THEN, ELSE, ENDIF, WHILE, DO, ENDWHILE, FOR, ENDFOR, 
+					 FOREACH, IN, ENDFOREACH, REPEAT, UNTIL, ENDREPEAT, 
+					 SWITCH, CASE, DEFAULT, ENDSWITCH, RETURN,
+					 PAP, PCIERRE, LAP, LCIERRE,IGUAL, COMA, PUNTOCOMA;
+			 
+terminal Integer	ID, IID, VCHAR, VSTRING, 
+					ENT, REAL ;
+			
+terminal Integer	SUMA, RESTA, MULT, DIV, DIVENT, MOD, EXP,
+					AND, OR, NOT,
+					OPIGUAL, OPDISTINTO,
+					MENOR, MENORIG, MAYOR, MAYORIG,
+					INT, FLOAT, CHAR, STRING, BOOL ;
+			
+terminal Boolean	BOOLEAN ;
+		
+
+non terminal Program 		CODE;
+non terminal Opciones		OPC;
+non terminal List<Stm>		S;
+non terminal Stm			S0;
+non terminal List<DecVar>	DV;
+non terminal DecVar			DV1;
+non terminal
+non terminal
+non terminal
+non terminal 
+
+S0, DV, DF, TIPO, ASIG, ASIG1, P, F, VAL,
+              DV1, DV2, PEP, ARG, ARG1, ARG2, ARG3,
+              N_IF, N_WHILE, N_FOR, N_FOREACH, N_REPEAT, N_SWITCH, N_RET,
+			  N_CASE, N_DEFAULT, COND, COND1, CALL,
+              B, B0, B1, B2, B3, C, COMP, A, A1, A2, A3, A4, A5, A6;
+
+			  
+			  
+CODE  ::= OPC:op BEGIN S:stms END ;						{: RESULT = new Program(op,stms); :}
+OPC   ::= DECLARE VAR DV:dvs DECLARE FUNCTION DF:dfs ;	{: RESULT = new Opciones(dvs, dfs); :}
+DV    ::= DV:dvs  DV:dv 								{: dvs.add(dv); RESULT = dvs; :}
+			| ;											{: RESULT = new LinkedList<DecVar>(); :}
+DV1   ::= TIPO PEP DV2 ;
+
+
+DV2   ::= ID PUNTOCOMA | ASIG ;
+DF    ::= DF:dfs P:p 									{:  :}
+			| DF:dfs F:f 
+			| ;
+PEP   ::= PEP PAP ENT PCIERRE | ;
+P     ::= ID PAP ARG PCIERRE LAP S LCIERRE ;
+F     ::= TIPO ID PAP ARG PCIERRE LAP S LCIERRE ;
+ARG   ::= TIPO ID ARG1 | ;
+ARG1  ::= ARG1 COMA TIPO ID | ;
+
+S     ::= S S0 
+			| ;
+S0    ::= DV1 | ASIG | N_IF | N_WHILE | N_FOR | N_FOREACH | N_REPEAT | N_SWITCH | N_RET ; 
+	ASIG  ::= ID IGUAL VAL PUNTOCOMA ;
+	N_IF  ::= IF B THEN S ELSE S ENDIF ;
+	N_WHILE ::= WHILE B DO S ENDWHILE ;
+	N_FOR ::= FOR PAP ASIG1 PUNTOCOMA COND PUNTOCOMA ASIG1 PCIERRE S ENDFOR ;
+ASIG1  ::= ID IGUAL VAL ;
+COND  ::= B COND1 | ;
+COND1 ::= COND1 COMA B | ;
+	N_FOREACH ::= FOREACH ID IN ID DO S ENDFOREACH ;
+	N_REPEAT ::= REPEAT S UNTIL B ENDREPEAT;
+	N_SWITCH ::= SWITCH PAP ID PCIERRE N_CASE N_DEFAULT ENDSWITCH ;
+	N_CASE ::= CASE PAP VAL PCIERRE S | N_CASE CASE PAP VAL PCIERRE S ;
+	N_DEFAULT ::= DEFAULT S | ;
+	N_RET ::= RETURN VAL PUNTOCOMA ;
+CALL  ::= ID PAP ARG2 PCIERRE ;
+ARG2  ::= VAL ARG3 | ;
+ARG3  ::= ARG3 COMA VAL | ;
+
+TIPO ::= INT | FLOAT | CHAR | STRING | BOOL ;
+VAL  ::= VCHAR | VSTRING | B | CALL ;
+
+B  ::= NOT B | B0 ;
+B0 ::= B0 OR B1 | B1 ;
+B1 ::= B1 AND B2 | B2 ;
+B2 ::= B2 COMP B3 | B3 ;
+B3 ::= BOOLEAN | A ;
+COMP ::= OPIGUAL | OPDISTINTO | MENOR | MENORIG | MAYOR | MAYORIG ;
+A  ::= A SUMA A1 | A RESTA A1 | A1 ;
+A1 ::= A1 MOD A2 | A2 ;
+A2 ::= A2 DIVENT A3 | A3 ;
+A3 ::= A3 DIV A4 | A4 ;
+A4 ::= A4 MULT A5 | A5 ;
+A5 ::= A6 EXP A5 | A6 ;
+A6 ::= PAP B PCIERRE | ENT | REAL | ID ;
