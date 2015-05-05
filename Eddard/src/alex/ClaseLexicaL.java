@@ -1,6 +1,6 @@
 package alex;
 
-public enum ClaseLexica {
+public enum ClaseLexicaL {
  BEGIN, END, DECLARE, VAR, CLASS, FUNCTION,
  CCLASS, PUBLIC, PRIVATE, 
  IF, THEN, ELSE, ENDIF, WHILE, DO, ENDWHILE, FOR, ENDFOR, 
