@@ -38,9 +38,8 @@ parteDecimal = {digito}* {digitoPositivo}
 
 separador = [ \t\r\b\n]
 comentario = #[^\n]* 
-comAp = /\*
-comCierre = \*/
-
+comAp = \u005B
+comCierre = \u005D
 Begin = Begin
 End = End
 Declare = Declare
@@ -86,8 +85,8 @@ Id = {may}({min}|{may}|{digito})*
 ent = [\+,\-]?{parteEntera}
 real = [\+,\-]?{parteEntera}\.{parteDecimal}
 boolean = (True|False)
-vchar = \' (may | min |digitopositivo |0| separador) \'
-vstring = \" (may | min |digitopositivo |0| separador)* \"
+vchar = \' ({may} | {min} |{digitopositivo} |0| {separador}) \'
+vstring = \" ({may} | {min} |{digitopositivo} |0| {separador})* \"
 
 operadorSuma = \+
 operadorResta = \-
@@ -116,8 +115,6 @@ puntoycoma = \;
 %%
 {separador}               {}
 {comentario}              {}
-{comAp}	                  {}
-{comCierre}               {}
 
 {Begin}                   {return ops.unidadBegin();}
 {End}                     {return ops.unidadEnd();}

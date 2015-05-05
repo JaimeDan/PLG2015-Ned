@@ -38,9 +38,9 @@ parteDecimal = {digito}* {digitoPositivo}
 
 separador = [ \t\r\b\n]
 comentario = #[^\n]* 
-comAp = /\*
-comCierre = \*/
-
+comAp = \[
+comCierre = \]
+comentBloque = {comAp}[^{comCierre}]*{comCierre}
 Begin = Begin
 End = End
 Declare = Declare
@@ -116,8 +116,7 @@ puntoycoma = \;
 %%
 {separador}               {}
 {comentario}              {}
-{comAp}	                  {}
-{comCierre}               {}
+{comentBloque}            {}
 
 {Begin}                   {return ops.unidadBegin();}
 {End}                     {return ops.unidadEnd();}
