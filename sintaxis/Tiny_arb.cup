@@ -20,11 +20,11 @@ init with {:
 
 
 terminal     		BEGIN, END, DECLARE, VAR, CLASS, FUNCTION,
-					 CCLASS, PUBLIC, PRIVATE, 
-					 IF, THEN, ELSE, ENDIF, WHILE, DO, ENDWHILE, FOR, ENDFOR, 
-					 FOREACH, IN, ENDFOREACH, REPEAT, UNTIL, ENDREPEAT, 
-					 SWITCH, CASE, DEFAULT, ENDSWITCH, RETURN,
-					 PAP, PCIERRE, LAP, LCIERRE,IGUAL, COMA, PUNTOCOMA;
+					CCLASS, PUBLIC, PRIVATE, 
+					IF, THEN, ELSE, ENDIF, WHILE, DO, ENDWHILE, FOR, ENDFOR, 
+					FOREACH, IN, ENDFOREACH, REPEAT, UNTIL, ENDREPEAT, 
+					SWITCH, CASE, DEFAULT, ENDSWITCH, RETURN,
+					PAP, PCIERRE, LAP, LCIERRE,IGUAL, COMA, PUNTOCOMA;
 			 
 terminal Integer	ID, IID, VCHAR, VSTRING, 
 					ENT, REAL ;
@@ -39,7 +39,7 @@ terminal Boolean	BOOLEAN ;
 		
 
 non terminal Program 		CODE;
-non terminal Opciones		OPC;
+non terminal Declaraciones	OPC;
 non terminal List<Stm>		S;
 non terminal Stm			S0;
 non terminal List<DecVar>	DV;
@@ -58,25 +58,40 @@ S0, DV, DF, TIPO, ASIG, ASIG1, P, F, VAL,
 			  
 			  
 CODE  ::= OPC:op BEGIN S:stms END ;						{: RESULT = new Program(op,stms); :}
-OPC   ::= DECLARE VAR DV:dvs DECLARE FUNCTION DF:dfs ;	{: RESULT = new Opciones(dvs, dfs); :}
-DV    ::= DV:dvs  DV:dv 								{: dvs.add(dv); RESULT = dvs; :}
-			| ;											{: RESULT = new LinkedList<DecVar>(); :}
-DV1   ::= TIPO PEP DV2 ;
+OPC   ::= DECLARE VAR DV:dvs DECLARE FUNCTION DF:dfs ;	{: RESULT = new Declaraciones(dvs, dfs); :}
+DV    ::= DV:dvs  DV1:dv 								{: dvs.add(dv); RESULT = dvs; :}
+		| ;												{: RESULT = new LinkedList<DecVar>(); :}
+DV1   ::= TIPO PEP DV2 ;								{: RESULT = new :}
 
 
-DV2   ::= ID PUNTOCOMA | ASIG ;
+DV2   ::= ID PUNTOCOMA 
+		| ASIG ;
 DF    ::= DF:dfs P:p 									{:  :}
-			| DF:dfs F:f 
-			| ;
-PEP   ::= PEP PAP ENT PCIERRE | ;
+		| DF:dfs F:f 
+		| ;
+PEP   ::= PEP PAP ENT PCIERRE 
+		| ;
 P     ::= ID PAP ARG PCIERRE LAP S LCIERRE ;
 F     ::= TIPO ID PAP ARG PCIERRE LAP S LCIERRE ;
-ARG   ::= TIPO ID ARG1 | ;
-ARG1  ::= ARG1 COMA TIPO ID | ;
+ARG   ::= TIPO ID ARG1 
+		| ;
+ARG1  ::= ARG1 COMA TIPO ID 
+		| ;
 
 S     ::= S S0 
-			| ;
-S0    ::= DV1 | ASIG | N_IF | N_WHILE | N_FOR | N_FOREACH | N_REPEAT | N_SWITCH | N_RET ; 
+		| ;
+//S0    ::= DV1 | ASIG | N_IF | N_WHILE | N_FOR | N_FOREACH | N_REPEAT | N_SWITCH | N_RET ; 
+
+S0	  ::= ID IGUAL VAL PUNTOCOMA
+		| IF B THEN S ELSE S ENDIF
+		| WHILE B DO S ENDWHILE
+		| FOR PAP ASIG1 PUNTOCOMA COND PUNTOCOMA ASIG1 PCIERRE S ENDFOR
+		| FOREACH ID IN ID DO S ENDFOREACH
+		| REPEAT S UNTIL B ENDREPEAT
+		| SWITCH PAP ID PCIERRE N_CASE N_DEFAULT ENDSWITCH 
+		| RETURN VAL PUNTOCOMA
+		| CALL ;
+
 	ASIG  ::= ID IGUAL VAL PUNTOCOMA ;
 	N_IF  ::= IF B THEN S ELSE S ENDIF ;
 	N_WHILE ::= WHILE B DO S ENDWHILE ;
@@ -87,8 +102,8 @@ COND1 ::= COND1 COMA B | ;
 	N_FOREACH ::= FOREACH ID IN ID DO S ENDFOREACH ;
 	N_REPEAT ::= REPEAT S UNTIL B ENDREPEAT;
 	N_SWITCH ::= SWITCH PAP ID PCIERRE N_CASE N_DEFAULT ENDSWITCH ;
-	N_CASE ::= CASE PAP VAL PCIERRE S | N_CASE CASE PAP VAL PCIERRE S ;
-	N_DEFAULT ::= DEFAULT S | ;
+N_CASE ::= CASE PAP VAL PCIERRE S | N_CASE CASE PAP VAL PCIERRE S ;
+N_DEFAULT ::= DEFAULT S | ;
 	N_RET ::= RETURN VAL PUNTOCOMA ;
 CALL  ::= ID PAP ARG2 PCIERRE ;
 ARG2  ::= VAL ARG3 | ;
