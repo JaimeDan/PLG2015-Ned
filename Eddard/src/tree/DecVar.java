@@ -1,5 +1,10 @@
 package tree;
 
+import java.util.List;
+
+import tree.Stm.Asignacion;
+import tree.Val.Exp;
+
 public class DecVar {
 	private Tipo tip;
 	private Id id;
@@ -7,8 +12,8 @@ public class DecVar {
 	private boolean ass;
 	public class Tipo{
 		private String tipo;
-		private List<int> indices;
-		public Tipo (String tipo, List<int> ind){
+		private List<Integer> indices;
+		public Tipo (String tipo, List<Integer> ind){
 			this.tipo = tipo;
 			this.indices = ind;
 		}

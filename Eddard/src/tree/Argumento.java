@@ -1,5 +1,7 @@
 package tree;
 
+import tree.DecVar.Tipo;
+
 public class Argumento {
 	private Id id;
 	private Tipo tipo;

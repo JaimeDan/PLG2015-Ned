@@ -1,5 +1,9 @@
 package tree;
 
+import java.util.List;
+
+import tree.Val.Exp;
+
 public abstract class Stm extends Nodo{
 	
 	public class If extends Stm {

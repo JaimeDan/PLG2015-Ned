@@ -1,3 +1,4 @@
+package tree;
 
 public abstract class Val {
 	//public enum Tipo99
@@ -10,7 +11,7 @@ public abstract class Val {
 	
 	public abstract class Exp extends Val{
 		public class ExpOr{
-			public ExpOr
+			//public ExpOr
 		}
 	}
 	

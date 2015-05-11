@@ -1,5 +1,7 @@
 package tree;
 
+import java.util.List;
+
 public abstract class DecFP {
 	private List<Argumento> args;
 	private Id name;
@@ -19,7 +21,7 @@ public abstract class DecFP {
 		
 	}
 	public class DecP extends DecFP{
-		public DecF(List<Argumento> args, Id name, List<Stm> sents, Tipo tipo){
+		public DecP(List<Argumento> args, Id name, List<Stm> sents, Tipo tipo){
 			super(args, name, sents);
 		}
 		
