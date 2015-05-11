@@ -9,11 +9,7 @@ public abstract class Val {
 		}
 	}
 	
-	public abstract class Exp extends Val{
-		public class ExpOr{
-			//public ExpOr
-		}
-	}
+	
 	
 	
 }
